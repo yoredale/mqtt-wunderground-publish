@@ -1,17 +1,27 @@
-# MQTT-Wunderground
+# MQTT Wunderground Publish
 
-Simple MQTT publisher of weather data using the WeatherUnderground API.
-Publishes the current temperature, relative humidity, precipitation, pressure, windspeed, winddirection as well as sunrise and sunset times from a given Personal Weather Station.
+Publishes personal weather station data recieved from a MQTT topic to Weather Underground.
 
-## How to use
-MQTT-WeatherUnderground has to know the host/IP of the MQTT broker to connect to. For this purpose MQTT-WeatherUnderground reads the `MQTT_PORT` environment variable.
-`MQTT_PORT` should be in the Docker links format `tcp://<host>:<port>`, for example `MQTT_PORT = tcp://192.168.1.2:1883`.
+This was developed to work with [rtl-433](https://github.com/merbanan/rtl_433) and a La Crosse Breeze Pro station.
 
-MQTT-Wunderground also needs your [WeatherUnderground API key](wunderground.com/weather/api) in the environment variable `CONFIG_WU_API_KEY` so it can request data from Weather Underground.
+Required environment variables
+```txt
+MQTT_URL "tcp://localhost:8883"
+CONFIG_TOPIC=<MQTT topic> # example sensors/rtl_433/something
+CONFIG_WU_ID=<weather underground station id
+CONFIG_WU_KEY=<weather underground key/password>
+```
 
-And finally MQTT-Wunderground reads its config from the MQTT topic passed in the `CONFIG_TOPIC` environment variable. For example: `CONFIG_TOPIC=config/clients/wunderground`
-- deviceid: The name to use for this instance of MQTT-Wunderground. For example `weather-home`
-- publish_topic: The parent topic that all measurements will be published to
-- updaterate: Time in seconds between updates
-- country
-- city
+## MQTT Topic Format
+
+The payload of the message needs to be in the following format:
+```json
+{
+    "time":"2020-11-16T02:08:20",
+    "temperature_F":38.48,
+    "humidity":88,
+    "wind_avg_mi_h":0,
+    "wind_dir_deg":9,
+}
+```
+

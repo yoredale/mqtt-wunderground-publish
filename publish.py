@@ -32,6 +32,7 @@ sub_topics['wind_avg_mi_h'] = "windspeedmph"
 sub_topics['humidity'] = "humidity"
 sub_topics['temperature_F'] = "tempf"
 sub_topics['time'] = "dateutc"
+sub_topics['dewpoint'] = 'dewptf'
 
 
 # Get MQTT servername/address
@@ -83,6 +84,9 @@ def on_message(mosq, obj, msg):
     if msg.topic == config['config_topic']:
 
         parsed_json = json.loads(payload_as_string)
+
+        # Calculate dew point
+        parsed_json['dewpoint'] = parsed_json['temperature_F'] - ((100.0 - parsed_json['humidity']) / 2.788 )
 
         wu_url = "https://weatherstation.wunderground.com/weatherstation/updateweatherstation.php?action=updateraw" + \
                  "&ID=" + config['wu_id'] + \

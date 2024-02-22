@@ -20,21 +20,21 @@ MQTT_PWD="Password"
 
 ## MQTT Topic Format
 
-The payload of the message needs to be in the following format:
+The relevant payload of the message output by the chirpstack decoder for the senstick has the following format:
 ```json
 {
-    "objects":
+  "time":"2020-11-16T02:08:20",
+  "objects":
     {
-        "time":"2020-11-16T02:08:20",
-        "temperature":15,
-        "humidity":88,
-        "pressure":976.5
+      "temperature":15,
+      "humidity":88,
+      "pressure":976.5
     }
 }
 ```
 Temperature is deg C, Humidity is %, Pressure is hPa.
 
-Dewpoint is calculated, and temperature and dew point are converted to Farenheit.
+Dewpoint is calculated, temperature and dew point are converted to Farenheit for upload.
 
 Pressure is converted to Mean Sea Level Pressure, then converted to Inches of Mercury.
 

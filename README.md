@@ -1,15 +1,21 @@
 # MQTT Wunderground Publish
 
-Publishes personal weather station data recieved from a MQTT topic to Weather Underground.
+Publishes personal sensor data recieved from a MQTT topic to Weather Underground.
 
-This was developed to work with [rtl-433](https://github.com/merbanan/rtl_433) and a La Crosse Breeze Pro station.
+This takes the data from a Senzemo Senstick, as published by chirpstack to an mqtt broker.
+
 
 Required environment variables
 ```txt
-MQTT_URL "tcp://localhost:8883"
-CONFIG_TOPIC=<MQTT topic> # example sensors/rtl_433/something
-CONFIG_WU_ID=<weather underground station id
+MQTT_URL="tcp://localhost:1883"
+CONFIG_TOPIC=<MQTT topic> # eg application/APP_ID/device/DEV_EUI/event/up
+CONFIG_WU_ID=<weather underground station id>
 CONFIG_WU_KEY=<weather underground key/password>
+```
+Optional variables to do mqtt authentication
+```txt
+MQTT_USR="Username"
+MQTT_PWD="Password"
 ```
 
 ## MQTT Topic Format
@@ -17,11 +23,18 @@ CONFIG_WU_KEY=<weather underground key/password>
 The payload of the message needs to be in the following format:
 ```json
 {
-    "time":"2020-11-16T02:08:20",
-    "temperature_F":38.48,
-    "humidity":88,
-    "wind_avg_mi_h":0,
-    "wind_dir_deg":9,
+    "objects":
+    {
+        "time":"2020-11-16T02:08:20",
+        "temperature":15,
+        "humidity":88,
+        "pressure":976.5
+    }
 }
 ```
+Temperature is deg C, Humidity is %, Pressure is hPa.
+
+Dewpoint is calculated, and temperature and dew point are converted to Farenheit.
+
+Pressure is converted to Mean Sea Level Pressure, then converted to Inches of Mercury.
 

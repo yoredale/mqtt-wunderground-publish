@@ -26,9 +26,9 @@ The relevant payload of the message output by the chirpstack decoder for the sen
   "time":"2020-11-16T02:08:20",
   "objects":
     {
-      "temperature":15,
-      "humidity":88,
-      "pressure":976.5
+      "Temperature":15,
+      "Humidity":88,
+      "Pressure":976.5
     }
 }
 ```
